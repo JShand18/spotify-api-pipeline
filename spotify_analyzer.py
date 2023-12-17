@@ -19,8 +19,12 @@ def extract_playlist():
     top_playlists = spotify_top_playlists()
     for uri in top_playlists:
         top_playlist = Playlist(sp, uri, top_playlists[uri])
-        
-        print(top_playlist.tracks)
+        top_playlist.save_to_csv()
+
+    new_playlists = spotify_new_playlists()
+    for uri in new_playlists:
+        new_playlist = Playlist(sp, uri, new_playlists[uri])
+        new_playlist.save_to_csv()
 
 
 if __name__ == '__main__':
