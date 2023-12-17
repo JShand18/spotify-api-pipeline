@@ -14,13 +14,21 @@ class Playlist():
         self.name = name
         self.uri = uri
         self.tracks = self.extract()
+        self.filename = f'{self.name}.csv'
+        self.filepath = Path(f'files/{self.filename}')
     
     def extract(self):
+        # retrieving tracks from spotify
         tracks = self.sp.playlist_items(self.uri)
+
+        # cleaning track and feature analysis from API and places in a DataFrame
         tracks_playlist_df = self.get_playlist_data_df(tracks)    
         features_playlist_df = self.get_track_feature_df(tracks_playlist_df)
+
+        # Merging track info and feature analysis on the id contained in the uri
         playlist_df = pd.merge(tracks_playlist_df, features_playlist_df, on='id', how='outer')
         playlist_df.set_index('id', inplace=True)
+
         return playlist_df
 
     def get_playlist_data_df(self, tracks):
@@ -43,23 +51,25 @@ class Playlist():
         return tracks_playlist_df
     
     def get_track_feature_df(self, tracks_playlist_df):
-        data = {
-            'acousticness': [],
-            'danceability': [],
-            'duration_ms': [],
-            'energy': [],
-            'id': [],
-            'instrumentalness': [],
-            'key': [],
-            'liveness': [],
-            'loudness': [],
-            'mode': [],
-            'speechiness': [],
-            'tempo': [],
-            'time_signature': [],
-            'track_href': [],
-            'valence': []
-        }
+        # TODO: test to see if neccasary for error handling
+
+        # data = {
+        #     'acousticness': [],
+        #     'danceability': [],
+        #     'duration_ms': [],
+        #     'energy': [],
+        #     'id': [],
+        #     'instrumentalness': [],
+        #     'key': [],
+        #     'liveness': [],
+        #     'loudness': [],
+        #     'mode': [],
+        #     'speechiness': [],
+        #     'tempo': [],
+        #     'time_signature': [],
+        #     'track_href': [],
+        #     'valence': []
+        # }
 
         track_ids = tracks_playlist_df['id'].to_list()
         track_features = self.sp.audio_features(track_ids)
@@ -87,6 +97,5 @@ class Playlist():
         return features_playlist_df
     
     def save_to_csv(self):
-        filepath = Path('files/%s.csv'%self.name)
-        self.tracks.to_csv(filepath)
+        self.tracks.to_csv(self.filepath)
     
