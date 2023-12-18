@@ -2,7 +2,6 @@ resource "aws_cloudwatch_event_rule" "every_week" {
     name = "every-week"
     description = "Sends a trigger every week"
     schedule_expression = "rate(7 days)"
-    state = ENABLED
 }
 
 resource "aws_cloudwatch_event_target" "trigger_cmo_strategy" {

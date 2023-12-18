@@ -1,0 +1,7 @@
+.vscode
+.DS_Store
+.tf/terraform*
+.tf/.terraform
+.env
+
+__pycache__

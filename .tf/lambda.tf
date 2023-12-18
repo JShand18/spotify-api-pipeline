@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "spotify_analysis" {
-  filename = "../payload.zip"
+  filename =  "../payload.zip"
   function_name = "spotify_analysis"
   handler = "spotify_analzyer.lambda_handler"
   role = "${aws_iam_role.lambda_execution_role.arn}"

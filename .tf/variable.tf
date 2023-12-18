@@ -11,23 +11,23 @@ variable "s3_bucket" {
 }
 
 variable "TF_VAR_SPOTIPY_CLIENT_ID" {
-  type = "string"
+  type = string
 }
 
 variable "TF_VAR_SPOTIPY_CLIENT_SECRET" {
-  type = "string"
+  type = string
 }
 
 variable "TF_VAR_SPOTIPY_REDIRECT_URI" {
-  type = "string"
+  type = string
 }
 
 variable "TF_VAR_ACCESS_KEY" {
-  type = "string"
+  type = string
 }
 
 variable "TF_VAR_SECRET_KEY" {
-  type = "string"
+  type = string
 }
 
 variable "aws_region" {
