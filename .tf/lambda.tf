@@ -3,7 +3,7 @@ resource "aws_lambda_function" "spotify_analysis" {
   function_name = "spotify_analysis"
   handler = "spotify_analzyer.lambda_handler"
   role = "${aws_iam_role.lambda_execution_role.arn}"
-  runtime = "python3.12"
+  runtime = "python3.9"
   timeout = "300"
 
   environment {

@@ -1,13 +1,13 @@
 variable "db_password" {
   description = "Password for Redshift master DB user"
   type        = string
-  default     = "js18"
+  default     = "Jshandy18"
 }
 
 variable "s3_bucket" {
   description = "Bucket name for S3"
   type        = string
-  default     = "spotify_analysis_bucket"
+  default     = "spotify-analysis-bucket"
 }
 
 variable "TF_VAR_SPOTIPY_CLIENT_ID" {
@@ -20,6 +20,7 @@ variable "TF_VAR_SPOTIPY_CLIENT_SECRET" {
 
 variable "TF_VAR_SPOTIPY_REDIRECT_URI" {
   type = string
+  default = "http://localhost:3000"
 }
 
 variable "TF_VAR_ACCESS_KEY" {
