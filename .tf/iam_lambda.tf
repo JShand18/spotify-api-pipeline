@@ -1,9 +1,9 @@
 resource "aws_iam_role" "lambda_execution_role" {
-  name = "lambda_execution_role"
+  name               = "lambda_execution_role"
   assume_role_policy = data.aws_iam_policy_document.lambda_trust_policy.json
 }
 
-data "aws_iam_policy_document" "lambda_trust_policy"{
+data "aws_iam_policy_document" "lambda_trust_policy" {
   statement {
     effect = "Allow"
     principals {
@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "lambda_trust_policy"{
 
 data "aws_iam_policy_document" "lambda_execution_policy_document" {
   statement {
-    sid = "ManageLambdaFunction"
+    sid    = "ManageLambdaFunction"
     effect = "Allow"
     actions = [
       "lambda:*",
@@ -30,14 +30,15 @@ data "aws_iam_policy_document" "lambda_execution_policy_document" {
     ]
     resources = ["*"]
   }
+
 }
 
 resource "aws_iam_policy" "lambda_execution_policy" {
-  name = "lambda_execution_policy"
+  name   = "lambda_execution_policy"
   policy = data.aws_iam_policy_document.lambda_execution_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_attachment" {
-  role = aws_iam_role.lambda_execution_role.name
+  role       = aws_iam_role.lambda_execution_role.name
   policy_arn = aws_iam_policy.lambda_execution_policy.arn
 }

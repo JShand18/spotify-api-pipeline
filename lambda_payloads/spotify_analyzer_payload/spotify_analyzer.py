@@ -24,12 +24,9 @@ def extract_playlist(name, uri, sp, s3):
 def extract_all():
     # Spotify client connect using credientials stored in .env
     sp = spotipy.Spotify(client_credentials_manager=spotipy.oauth2.SpotifyClientCredentials())
-    access_key = os.getenv('ACCESS_KEY')
-    secret_key = os.getenv('SECRET_KEY')
+    access_key = os.getenv('AWS_ACCESS_KEY')
+    secret_key = os.getenv('AWS_SECRET_KEY')
     s3 = boto3.resource('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
-
-    for bucket in s3.buckets.all():
-        print(bucket.name)
 
     # Retrieving playlist names and uri
     top_playlists = spotify_top_playlists()

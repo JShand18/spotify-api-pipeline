@@ -2,6 +2,7 @@
 .DS_Store
 .tf/terraform*
 .tf/.terraform
+.tf/terraform.tfvars
 .env
 
 __pycache__/

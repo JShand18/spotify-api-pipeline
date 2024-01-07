@@ -1,3 +1,7 @@
+locals {
+  envs = { for tuple in regexall("(.*)=(.*)", file("../.env")) : tuple[0] => sensitive(tuple[1]) }
+}
+
 variable "db_password" {
   description = "Password for Redshift master DB user"
   type        = string
@@ -19,7 +23,7 @@ variable "TF_VAR_SPOTIPY_CLIENT_SECRET" {
 }
 
 variable "TF_VAR_SPOTIPY_REDIRECT_URI" {
-  type = string
+  type    = string
   default = "http://localhost:3000"
 }
 
