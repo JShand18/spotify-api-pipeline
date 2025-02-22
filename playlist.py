@@ -1,9 +1,8 @@
-import spotipy
-import csv
-import boto3
 from datetime import datetime
 from pathlib import Path  
 import pandas as pd
+
+from tracks import Track
 
 
 
@@ -14,8 +13,9 @@ class Playlist():
         self.name = name
         self.uri = uri
         self.tracks = self.extract()
-        self.filename = f'{self.name}.csv'
-        self.filepath = Path(f'files/{self.filename}')
+
+    def extract_tracks(self):
+        
     
     def extract(self):
         # retrieving tracks from spotify
@@ -23,53 +23,33 @@ class Playlist():
 
         # cleaning track and feature analysis from API and places in a DataFrame
         tracks_playlist_df = self.get_playlist_data_df(tracks)    
-        features_playlist_df = self.get_track_feature_df(tracks_playlist_df)
+        # features_playlist_df = self.get_track_feature_df(tracks_playlist_df)
 
-        # Merging track info and feature analysis on the id contained in the uri
-        playlist_df = pd.merge(tracks_playlist_df, features_playlist_df, on='id', how='outer')
-        playlist_df.set_index('id', inplace=True)
-
-        return playlist_df
+        # # Merging track info and feature analysis on the id contained in the uri
+        # playlist_df = pd.merge(tracks_playlist_df, features_playlist_df, on='id', how='outer')
+        # playlist_df.set_index('id', inplace=True)
+        pass
+        # return playlist_df
 
     def get_playlist_data_df(self, tracks):
-        data = {
-            'id':[],
-            'title':[],
-            'artist':[],
-            'popularity':[],
-        }
+        data = {}
 
         for item in tracks['items']:
             track = item['track']
-            if track['id'] not in  data['id']:
-                data['id'].append(track['id'])
-                data['title'].append(track['name'])
-                data['artist'].append(track['artists'][0]['name'])
-                data['popularity'].append(track['popularity'])
 
-        tracks_playlist_df = pd.DataFrame(data)
-        return tracks_playlist_df
+            id = track['id']
+            popularity = track['popularity']
+            uri = track['uri']
+           
+            track_obj = Track(self.sp, id, uri, self.uri, popularity)
+            data[id] = track_obj
+            
+        print(data)
+        
+
+        return data
     
     def get_track_feature_df(self, tracks_playlist_df):
-        # TODO: test to see if neccasary for error handling
-
-        # data = {
-        #     'acousticness': [],
-        #     'danceability': [],
-        #     'duration_ms': [],
-        #     'energy': [],
-        #     'id': [],
-        #     'instrumentalness': [],
-        #     'key': [],
-        #     'liveness': [],
-        #     'loudness': [],
-        #     'mode': [],
-        #     'speechiness': [],
-        #     'tempo': [],
-        #     'time_signature': [],
-        #     'track_href': [],
-        #     'valence': []
-        # }
 
         track_ids = tracks_playlist_df['id'].to_list()
         track_features = self.sp.audio_features(track_ids)
@@ -96,6 +76,5 @@ class Playlist():
         features_playlist_df = pd.DataFrame(track_features)
         return features_playlist_df
     
-    def save_to_csv(self):
-        self.tracks.to_csv(self.filepath)
-    
+    # def save_to_csv(self):
+    #     self.tracks.to_csv(self.filepath)
